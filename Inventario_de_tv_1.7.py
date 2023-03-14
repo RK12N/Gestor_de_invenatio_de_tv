@@ -16,21 +16,10 @@ pnt.title("Registro de inventario de Tv")
 
 wtotal = pnt.winfo_screenwidth()
 htotal = pnt.winfo_screenheight()
-wventana = 945
-hventana = 500
+wventana = 1100
+hventana = 550
 
-ID_SERIE = StringVar()
-MARCA = StringVar()
-MODELO = StringVar()
-TECNOLOGIA = StringVar()
-PULGADAS = StringVar()
-RESOLUCION = StringVar()
-SMART_TV = StringVar()
-ROKU = StringVar()
-CANTIDAD = StringVar()
-PRECIO = StringVar()
-PRECIO_VENTA = StringVar()
-ID = StringVar()
+
 
 connectio = pymysql.connect(
     host='localhost',
@@ -38,6 +27,7 @@ connectio = pymysql.connect(
     password='basededatos',
     db='TELEVISIONES'
 )
+
 def validate_entry(text):
     return text.isdecimal()
 
@@ -53,10 +43,11 @@ CANTIDAD = StringVar()
 PRECIO = StringVar()
 PRECIO_VENTA = StringVar()
 ID = StringVar()
+CATEGORIA = StringVar()
 
 class Ventana_ingreso_de_datos:
     def Ingresar_datos_a_mysql():
-        if ID_SERIE.get() =="" or MARCA.get() =="" or MODELO.get()=="" or TECNOLOGIA.get()=="" or PULGADAS.get()=="" or RESOLUCION.get()=="" or SMART_TV.get()=="" or ROKU.get()=="" or CANTIDAD.get()=="" or PRECIO.get()=="":
+        if ID_SERIE.get() =="" or MARCA.get() =="" or MODELO.get()=="" or TECNOLOGIA.get()=="" or PULGADAS.get()=="" or RESOLUCION.get()=="" or SMART_TV.get()=="" or ROKU.get()=="" or CANTIDAD.get()=="" or PRECIO.get()=="" or CATEGORIA.get()=="":
             messagebox.showinfo(message="Existen espacios vacios")
         else:
             cursor = connectio.cursor()
@@ -65,11 +56,11 @@ class Ventana_ingreso_de_datos:
             cantidad_tv= float(CANTIDAD.get())
             precio_tv = float(PRECIO.get())
             total = cantidad_tv * precio_tv
-            sql ="insert into INVENTARIOTV(ID_SERIE,MARCA,MODELO,TECNOLOGIA,PULGADAS,RESOLUCION,SMART_TV,ROKU,CANTIDAD,PRECIO,PRECIO_DE_VENTA,VALOR_TOTAL_MERCANCIA) VALUES ('{}','{}','{}','{}','{}','{}','{}','{}','{}','{}','{}','{}')".format("SNTV00" + ID_SERIE.get(),MARCA.get(),MODELO.get(),TECNOLOGIA.get(),PULGADAS.get(),RESOLUCION.get(),SMART_TV.get(),ROKU.get(),CANTIDAD.get(),PRECIO.get(),b,total)
+            sql ="insert into INVENTARIOTV(ID_SERIE,MARCA,MODELO,TECNOLOGIA,PULGADAS,RESOLUCION,SMART_TV,ROKU,CANTIDAD,PRECIO,PRECIO_DE_VENTA,VALOR_TOTAL_MERCANCIA,CATEGORIA) VALUES ('{}','{}','{}','{}','{}','{}','{}','{}','{}','{}','{}','{}','{}')".format("SNTV00" + ID_SERIE.get(),MARCA.get(),MODELO.get(),TECNOLOGIA.get(),PULGADAS.get(),RESOLUCION.get(),SMART_TV.get(),ROKU.get(),CANTIDAD.get(),PRECIO.get(),b,total,CATEGORIA.get())
             cursor.execute(sql)
             connectio.commit()
             messagebox.showinfo(message="Elementos enviados",title="Estado de ingreso de datos")
-            Ventana_ingreso_de_datos.limpiar()
+            Ventana_ingreso_de_datos.limpiar(set)
     #eliminador de la infomacion dentro de los entry
     def limpiar(str):
         ID_SERIE_ENTRY.delete(0,END)
@@ -82,6 +73,7 @@ class Ventana_ingreso_de_datos:
         ROKU_C.delete(0,END)
         CANTIDAD_ENTRY.delete(0,END)
         PRECIO_ENTRY.delete(0,END)
+        CATEGORIA_C.delete(0,END)
         pass
     def ventana_de_ingreso():
         pnt.config(background="silver") 
@@ -96,36 +88,41 @@ class Ventana_ingreso_de_datos:
         global LABEL_ROKU
         global LABEL_CANTIDAD
         global LABEL_PRECIO
+        global LABEL_CATEGORIA
 
         LABEL_ID_SERIE = Label(pnt,text="ID_SERIE: ",font=('Bahnschrift',10))
-        LABEL_ID_SERIE.place(x=50,y=10)
+        LABEL_ID_SERIE.place(x=50,y=30)
 
         LABEL_MARCA = Label(pnt,text="MARCA: ",font=('Bahnschrift',10))
-        LABEL_MARCA.place(x=325,y=10)
+        LABEL_MARCA.place(x=50,y=90)
 
         LABEL_MODELO = Label(pnt,text="MODELO: ",font=('Bahnschrift',10))
-        LABEL_MODELO.place(x=575,y=10)
+        LABEL_MODELO.place(x=300,y=90)
 
         LABEL_TECNOLOGIA = Label(pnt,text="TECNOLOGIA: ",font=('Bahnschrift',10))
-        LABEL_TECNOLOGIA.place(x=300,y=100)
-        
+        LABEL_TECNOLOGIA.place(x=50,y=150)
+
         LABEL_PULGADAS = Label(pnt,text="PULGADAS: ",font=('Bahnschrift',10))
-        LABEL_PULGADAS.place(x=50,y=100)
+        LABEL_PULGADAS.place(x=50,y=220)
 
         LABEL_RESOLUCION = Label(pnt,text="RESOLUCION: ",font=('Bahnschrift',10))
-        LABEL_RESOLUCION.place(x=550,y=100)
+        LABEL_RESOLUCION.place(x=50,y=280)
+
 
         LABEL_SMART_TV = Label(pnt,text="SMART_TV: ",font=('Bahnschrift',10))
-        LABEL_SMART_TV.place(x=50,y=180)
+        LABEL_SMART_TV.place(x=50,y=340)
 
         LABEL_ROKU = Label(pnt,text="ROKU: ",font=('Bahnschrift',10))
-        LABEL_ROKU.place(x=340,y=180)
+        LABEL_ROKU.place(x=300,y=340)
 
         LABEL_CANTIDAD = Label(pnt,text="CANTIDAD: ",font=('Bahnschrift',10))
-        LABEL_CANTIDAD.place(x=550,y=180)
+        LABEL_CANTIDAD.place(x=50,y=400)
 
         LABEL_PRECIO = Label(pnt,text="PRECIO POR UNIDAD: ",font=('Bahnschrift',10))
-        LABEL_PRECIO.place(x=250,y=260)
+        LABEL_PRECIO.place(x=300,y=400)
+
+        LABEL_CATEGORIA = Label(pnt,text="CATEGORIA: ",font=('Bahnschrift',10))
+        LABEL_CATEGORIA.place(x=50,y=450)
 
         global ID_SERIE_ENTRY
         global MARCA_C
@@ -137,40 +134,45 @@ class Ventana_ingreso_de_datos:
         global ROKU_C
         global CANTIDAD_ENTRY
         global PRECIO_ENTRY 
+        global CATEGORIA_C
         
         ID_SERIE_ENTRY = Entry(validate="key",validatecommand=(pnt.register(validate_entry),"%S"),textvariable=ID_SERIE,font=('Bahnschrift',10))
-        ID_SERIE_ENTRY.place(x=130,y=10)
+        ID_SERIE_ENTRY.place(x=150,y=30)
 
-        MARCA_C = ttk.Combobox(pnt,values =["ONN","TCL","HISENSE","RCA","LG","JVC","SPECTER","WESTINGHOUSE"],width=17,textvariable=MARCA,font=('Bahnschrift',10))
-        MARCA_C.place(x=385,y=10)
+        MARCA_C = ttk.Combobox(pnt,values =["ONN","TCL","HISENSE","RCA","LG","JVC","SPECTER","WESTINGHOUSE","SAMSUMG"],width=17,textvariable=MARCA,font=('Bahnschrift',10))
+        MARCA_C.place(x=150,y=90)
 
         MODELO_ENTRY = Entry(pnt,textvariable=MODELO,font=('Bahnschrift',10))
-        MODELO_ENTRY.place(x=645,y=10)
+        MODELO_ENTRY.place(x=370,y=90)
 
         TECNOLOGIA_C = ttk.Combobox(pnt,values=["LED","QLED","OLED"],width=17,textvariable=TECNOLOGIA,font=('Bahnschrift',10))
-        TECNOLOGIA_C.place(x=390,y=100)
+        TECNOLOGIA_C.place(x=150,y=150)
         
-        PULGADAS_ENTRY = Entry(pnt,textvariable=PULGADAS,font=('Bahnschrift',10))
-        PULGADAS_ENTRY.place(x=130,y=100)
+        PULGADAS_ENTRY = Entry(validate="key",validatecommand=(pnt.register(validate_entry),"%S"),textvariable=PULGADAS,font=('Bahnschrift',10))
+        PULGADAS_ENTRY.place(x=150,y=220)
 
         RESOLUCION_C = ttk.Combobox(pnt,values=["720P","1080P","2K","4K"],width=17,textvariable=RESOLUCION,font=('Bahnschrift',10))
-        RESOLUCION_C.place(x=645,y=100)
+        RESOLUCION_C.place(x=150,y=280)
 
         SMART_TV_C= ttk.Combobox(pnt,values=["SI","NO"],width=17,textvariable=SMART_TV,font=('Bahnschrift',10))
-        SMART_TV_C.place(x=130,y=180)
+        SMART_TV_C.place(x=150,y=340)
 
         ROKU_C = ttk.Combobox(pnt,values=["SI","NO"],width=17,textvariable=ROKU,font=('Bahnschrift',10))
-        ROKU_C.place(x=390,y=180)
+        ROKU_C.place(x=350,y=340)
 
         CANTIDAD_ENTRY = Entry(validate="key",validatecommand=(pnt.register(validate_entry),"%S"),textvariable=CANTIDAD,font=('Bahnschrift',10))
-        CANTIDAD_ENTRY.place(x=645,y=180)
+        CANTIDAD_ENTRY.place(x=150,y=400)
 
         PRECIO_ENTRY = Entry(pnt,textvariable=PRECIO,font=('Bahnschrift',10))
-        PRECIO_ENTRY.place(x=390,y=260)
+        PRECIO_ENTRY.place(x=440,y=400)
 
+        CATEGORIA_C= ttk.Combobox(pnt,values=["TELEVISIONES","ABANICOS"],width=17,textvariable=CATEGORIA,font=('Bahnschrift',10))
+        CATEGORIA_C.place(x=150,y=450)
+
+        
         global botonenviar
         botonenviar = Button(pnt,text="ENVIAR",command=Ventana_ingreso_de_datos.Ingresar_datos_a_mysql)
-        botonenviar.place(x=440,y=300)
+        botonenviar.place(x=440,y=450,width=100,height=50)
         #para pase a otra pagina dentro del programa
         global menubar
         menubar = Menu(pnt)
@@ -181,7 +183,7 @@ class Ventana_ingreso_de_datos:
            
 class ventana_de_actualizacion:
     def imprimirven():
-        if ID_SERIE_ENTRY_ven.get() =="" or MARCA_C_ven.get() =="" or MODELO_ENTRY_ven.get()=="" or TECNOLOGIA_C_ven.get()=="" or PULGADAS_ENTRY_ven.get()=="" or RESOLUCION_C_ven.get()=="" or SMART_TV_C_ven.get()=="" or ROKU_C_ven.get()=="" or CANTIDAD_ENTRY_ven.get()=="" or PRECIO_ENTRY_ven.get()=="":
+        if ID_SERIE_ENTRY_ven.get() =="" or MARCA_C_ven.get() =="" or MODELO_ENTRY_ven.get()=="" or TECNOLOGIA_C_ven.get()=="" or PULGADAS_ENTRY_ven.get()=="" or RESOLUCION_C_ven.get()=="" or SMART_TV_C_ven.get()=="" or ROKU_C_ven.get()=="" or CANTIDAD_ENTRY_ven.get()=="" or PRECIO_ENTRY_ven.get()=="" or CATEGORIA_C_ven.get()=="":
             messagebox.showinfo(message="Existen espacios vacios")    
         else:
             ID_SQL= ID_LABEL_ENTRY_ven.get()
@@ -195,17 +197,22 @@ class ventana_de_actualizacion:
             ROKU_SQL=ROKU_C_ven.get()
             CANTIDAD_SQL=CANTIDAD_ENTRY_ven.get()
             PRECIO_SQL=PRECIO_ENTRY_ven.get()
+            CATEGORIA_SQL = CATEGORIA_C_ven.get()
             cursor = connectio.cursor()
             A =float(PRECIO.get())
-            b =A + 700
+            b =A + 500
             cantidad_tv= float(CANTIDAD_ENTRY_ven.get())
             precio_tv = float(PRECIO_ENTRY_ven.get())
             total = cantidad_tv * precio_tv
-            consulta ="UPDATE INVENTARIOTV SET ID_SERIE = %s,MARCA= %s,MODELO= %s,TECNOLOGIA= %s,PULGADAS= %s,RESOLUCION= %s,SMART_TV= %s,ROKU= %s,CANTIDAD= %s,PRECIO= %s,PRECIO_DE_VENTA= %s,VALOR_TOTAL_MERCANCIA= %s WHERE ID=%s"
-            valores = (ID_SERIE_SQL,MARCA_SQL,MODELO_SQL,TECNOLOGIA_SQL,PULGADAS_SQL,RESOLUCION_SQL,SMART_TV_SQL,ROKU_SQL,CANTIDAD_SQL,PRECIO_SQL,b,total,ID_SQL)
+            consulta ="UPDATE INVENTARIOTV SET ID_SERIE = %s,MARCA= %s,MODELO= %s,TECNOLOGIA= %s,PULGADAS= %s,RESOLUCION= %s,SMART_TV= %s,ROKU= %s,CANTIDAD= %s,PRECIO= %s,PRECIO_DE_VENTA= %s,VALOR_TOTAL_MERCANCIA= %s,CATEGORIA=%s WHERE ID=%s"
+            valores = (ID_SERIE_SQL,MARCA_SQL,MODELO_SQL,TECNOLOGIA_SQL,PULGADAS_SQL,RESOLUCION_SQL,SMART_TV_SQL,ROKU_SQL,CANTIDAD_SQL,PRECIO_SQL,b,total,CATEGORIA_SQL,ID_SQL)
             cursor.execute(consulta,valores)
             connectio.commit()
             messagebox.showinfo(message="Elementos actualizados",title="Estado de ingreso de datos")
+            ventana_de_actualizacion.limpiar_VEN()
+            messagebox.showinfo(message="Advertencia",title="Es nesesario recargar la pagina")
+            menu.eliminar_contenido_de_actualizacion()
+
     def ventana_de_tabla():
         menu.Eliminar_botones()
         global ID_LABEL_ENTRY_ven
@@ -219,6 +226,7 @@ class ventana_de_actualizacion:
         global ROKU_C_ven
         global CANTIDAD_ENTRY_ven
         global PRECIO_ENTRY_ven
+        global CATEGORIA_C_ven
 
         global LABEL_ID_SERIE_ven
         global LABEL_MARCA_ven
@@ -231,73 +239,83 @@ class ventana_de_actualizacion:
         global LABEL_CANTIDAD_ven
         global LABEL_PRECIO_ven
         global ID_LABEL_ven
+        global LABEL_CATEGORIA_ven
         
         ventana_de_actualizacion.arbol_datos()
+
         LABEL_ID_SERIE_ven = Label(pnt,text="ID_SERIE: ",font=('Bahnschrift',10))
         LABEL_ID_SERIE_ven.place(x=50,y=250)
 
         LABEL_MARCA_ven = Label(pnt,text="MARCA: ",font=('Bahnschrift',10))
-        LABEL_MARCA_ven.place(x=300,y=250)
+        LABEL_MARCA_ven.place(x=445,y=250)
 
         LABEL_MODELO_ven = Label(pnt,text="MODELO: ",font=('Bahnschrift',10))
-        LABEL_MODELO_ven.place(x=530,y=250)
+        LABEL_MODELO_ven.place(x=780,y=250)
       
         LABEL_TECNOLOGIA_ven = Label(pnt,text="TECNOLOGIA: ",font=('Bahnschrift',10))
         LABEL_TECNOLOGIA_ven.place(x=50,y=300)
 
         LABEL_PULGADAS_ven = Label(pnt,text="PULGADAS: ",font=('Bahnschrift',10))
-        LABEL_PULGADAS_ven.place(x=300,y=300)
+        LABEL_PULGADAS_ven.place(x=420,y=300)
        
         LABEL_RESOLUCION_ven = Label(pnt,text="RESOLUCION: ",font=('Bahnschrift',10))
-        LABEL_RESOLUCION_ven.place(x=530,y=300)
+        LABEL_RESOLUCION_ven.place(x=760,y=300)
 
         LABEL_SMART_TV_ven= Label(pnt,text="SMART_TV: ",font=('Bahnschrift',10))
         LABEL_SMART_TV_ven.place(x=50,y=350)
         
         LABEL_ROKU_ven= Label(pnt,text="ROKU: ",font=('Bahnschrift',10))
-        LABEL_ROKU_ven.place(x=300,y=350)
+        LABEL_ROKU_ven.place(x=450,y=350)
 
         LABEL_CANTIDAD_ven = Label(pnt,text="CANTIDAD: ",font=('Bahnschrift',10))
-        LABEL_CANTIDAD_ven.place(x=530,y=350)
+        LABEL_CANTIDAD_ven.place(x=780,y=350)
 
         LABEL_PRECIO_ven = Label(pnt,text="PRECIO POR UNIDAD: ",font=('Bahnschrift',10))
-        LABEL_PRECIO_ven.place(x=530,y=400)
+        LABEL_PRECIO_ven.place(x=370,y=400)
+
+        LABEL_CATEGORIA_ven = Label(pnt,text="CATEGORIA: ",font=('Bahnschrift',10))
+        LABEL_CATEGORIA_ven.place(x=770,y=400)
 
         ID_LABEL_ven= Label(pnt,text="ID:",font=('Bahnschrift',10))
-        ID_LABEL_ven.place(x=50,y=400)
+        ID_LABEL_ven.place(x=100,y=400)
+        #//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         ID_LABEL_ENTRY_ven=Entry(pnt,textvariable=ID,font=('Bahnschrift',10))
-        ID_LABEL_ENTRY_ven.place(x=80,y=400)
+        ID_LABEL_ENTRY_ven.place(x=140,y=400)
 
         ID_SERIE_ENTRY_ven = Entry(pnt,textvariable=ID_SERIE,font=('Bahnschrift',10))
         ID_SERIE_ENTRY_ven.place(x=140,y=250)
 
         MARCA_C_ven = ttk.Combobox(pnt,values =["ONN","TCL","HISENSE","RCA","LG","JVC","SPECTER","WESTINGHOUSE"],width=17,textvariable=MARCA,font=('Bahnschrift',10))
-        MARCA_C_ven.place(x=380,y=250)
+        MARCA_C_ven.place(x=500,y=250)
           
         MODELO_ENTRY_ven = Entry(pnt,textvariable=MODELO,font=('Bahnschrift',10))
-        MODELO_ENTRY_ven.place(x=625,y=250)
+        MODELO_ENTRY_ven.place(x= 850,y=250)
 
         TECNOLOGIA_C_ven = ttk.Combobox(pnt,values=["LED","QLED","OLED"],width=17,textvariable=TECNOLOGIA,font=('Bahnschrift',10))
         TECNOLOGIA_C_ven.place(x=140,y=300)
         
         PULGADAS_ENTRY_ven = Entry(pnt,textvariable=PULGADAS,font=('Bahnschrift',10))
-        PULGADAS_ENTRY_ven.place(x=380,y=300)
+        PULGADAS_ENTRY_ven.place(x=500,y=300)
         
         ROKU_C_ven = ttk.Combobox(pnt,values=["SI","NO"],width=17,textvariable=ROKU,font=('Bahnschrift',10))
-        ROKU_C_ven.place(x=380,y=350)
-        
+        ROKU_C_ven.place(x=500,y=350)
+
         CANTIDAD_ENTRY_ven = Entry(validate="key",validatecommand=(pnt.register(validate_entry),"%S"),textvariable=CANTIDAD,font=('Bahnschrift',10))
-        CANTIDAD_ENTRY_ven.place(x=625,y=350)
+        CANTIDAD_ENTRY_ven.place(x=850,y=350)
 
         RESOLUCION_C_ven = ttk.Combobox(pnt,values=["720P","1080P","2K","4K"],width=17,textvariable=RESOLUCION,font=('Bahnschrift',10))
-        RESOLUCION_C_ven.place(x=625,y=300)
+        RESOLUCION_C_ven.place(x=850,y=300)
 
         SMART_TV_C_ven= ttk.Combobox(pnt,values=["SI","NO"],width=17,textvariable=SMART_TV,font=('Bahnschrift',10))
         SMART_TV_C_ven.place(x=140,y=350)
 
         PRECIO_ENTRY_ven = Entry(pnt,textvariable=PRECIO,font=('Bahnschrift',10))
-        PRECIO_ENTRY_ven.place(x=670,y=400)
+        PRECIO_ENTRY_ven.place(x=500,y=400)
+
+        CATEGORIA_C_ven= ttk.Combobox(pnt,values=["TELEVISIONES","ABANICOS"],width=17,textvariable=CATEGORIA,font=('Bahnschrift',10))
+        CATEGORIA_C_ven.place(x=850,y=400)
+       
 
     def eliminar():
         ID_SQL= ID_LABEL_ENTRY_ven.get()
@@ -310,7 +328,8 @@ class ventana_de_actualizacion:
              connectio.commit()
              messagebox.showinfo(message="Elemento eliminado",title="Estado de ingreso de datos")
              ventana_de_actualizacion.limpiar_VEN()
-             
+             messagebox.showinfo(message="Es nesesario aplicar los cambios regresando al menu")
+             menu.eliminar_contenido_de_actualizacion()
         else:
             print("columna no eliminada")
     def limpiar_VEN():
@@ -326,19 +345,19 @@ class ventana_de_actualizacion:
         ROKU_C_ven.delete(0,END)
         CANTIDAD_ENTRY_ven.delete(0,END)
         PRECIO_ENTRY_ven.delete(0,END)
+        CATEGORIA_C_ven.delete(0,END)
 
     def arbol_datos():
         global arbol
         arbol = ttk.Treeview(pnt)
-        arbol['columns'] = ('columna1', 'columna2', 'columna3','columna4','columna5','columna6','columna7','columna8','columna9','columna10','columna11','columna12')
+        arbol['columns'] = ('columna1', 'columna2', 'columna3','columna4','columna5','columna6','columna7','columna8','columna9','columna10','columna11','columna12','columna13')
         a = 70
         arbol.heading("#0", text='ID')
         arbol.column("#0", anchor=CENTER, width=35)
-
-        arbol.heading('columna1', text='ID_SERIE')
+        arbol.heading('columna1', text='ID_SKU')
         arbol.column('columna1', anchor=CENTER, width=80)
         arbol.heading('columna2', text='MARCA')
-        arbol.column('columna2', anchor=CENTER, width=95)
+        arbol.column('columna2', anchor=CENTER, width=70)
         arbol.heading('columna3', text='MODELO')
         arbol.column('columna3', anchor=CENTER, width=a)
         arbol.heading('columna4', text='TECNOLOGIA')
@@ -355,14 +374,23 @@ class ventana_de_actualizacion:
         arbol.column('columna9', anchor=CENTER, width=a)
         arbol.heading('columna10', text='PRECIO')
         arbol.column('columna10', anchor=CENTER, width=50)
-        arbol.heading('columna11', text='PRECIO_DE_VENTA')
+        arbol.heading('columna11', text='PRECIO/DE/VENTA')
         arbol.column('columna11', anchor=CENTER, width=110)
-        arbol.heading('columna12', text='VALOR TOTAL')
+        arbol.heading('columna12', text='VALOR/TOTAL')
         arbol.column('columna12', anchor=CENTER, width=90)
+        arbol.heading('columna13', text='CATEGORIA')
+        arbol.column('columna13', anchor=CENTER, width=90)
+
         arbol.pack()
         global botonenviarven
         botonenviarven = Button(pnt,text="Actualizar",command=ventana_de_actualizacion.imprimirven)
         botonenviarven.place(x=300,y=450)
+
+        global botoneliminar
+        botoneliminar = Button(pnt,text="Eliminar",command=ventana_de_actualizacion.eliminar)
+        botoneliminar.place(x=700,y=450)
+
+
         def mostrar_datos(event):
             item = arbol.selection()[0]
             values = arbol.item(item, 'values')
@@ -372,8 +400,6 @@ class ventana_de_actualizacion:
             
             ID_SERIE_ENTRY_ven.delete(0, END)
             ID_SERIE_ENTRY_ven.insert(0, values[0])
-            ID_LABEL_ENTRY_ven.config(state='normal')
-            ID_LABEL_ENTRY_ven.config(state='readonly')
 
             MARCA_C_ven.delete(0, END)
             MARCA_C_ven.insert(0, values[1])
@@ -401,16 +427,19 @@ class ventana_de_actualizacion:
 
             PRECIO_ENTRY_ven.delete(0, END)
             PRECIO_ENTRY_ven.insert(0, values[9])
-          
+
+            CATEGORIA_C_ven.delete(0,END)
+            CATEGORIA_C_ven.insert(0,values[12])
+
+                      
         arbol.bind('<<TreeviewSelect>>', mostrar_datos)   
         
         #Consultar los datos de la base de datos
         cursor = connectio.cursor()
-        cursor.execute("SELECT * FROM INVENTARIOTV")
+        cursor.execute("select * from INVENTARIOTV")
         registros = cursor.fetchall()
-        
         for registro in registros:
-            arbol.insert('', END, text=registro[0], values=(registro[1], registro[2], registro[3],registro[4],registro[5],registro[6],registro[7],registro[8],registro[9],registro[10],registro[11],registro[12]))
+            arbol.insert('', END, text=registro[0], values=(registro[1], registro[2], registro[3],registro[4],registro[5],registro[6],registro[7],registro[8],registro[9],registro[10],registro[11],registro[12],registro[13]))
         global menubar
         menubar = Menu(pnt)
         pnt.config(menu=menubar)
@@ -422,23 +451,25 @@ class venta_de_busqueda_mysql():
 
     def buscar_informacion():
         valor_busqueda = entry_busqueda.get()
-        
         cnx = mysql.connector.connect(
-         host='localhost',
-        user='root',
-        password='basededatos',
-        db='TELEVISIONES'
+            host='localhost',
+            user='root',
+            password='basededatos',
+            db='TELEVISIONES'
         )
         cursor = cnx.cursor()
-        query = "SELECT * FROM INVENTARIOTV WHERE RESOLUCION LIKE %s ORDER BY PRECIO ASC"
-        cursor.execute(query, ('%' + valor_busqueda + '%',))
-        resultados = cursor.fetchall()
-        for i in arbol.get_children():
-            arbol.delete(i)
-        for resultado in resultados:
-            arbol.insert("", END, text=resultado[0], values=(resultado[1], resultado[2], resultado[3], resultado[4], resultado[5], resultado[6], resultado[7], resultado[8], resultado[9], resultado[11]))
-        cursor.close()
-        cnx.close()
+        if valor_busqueda =="":
+            messagebox.askokcancel("Espacio de busqueda vacio","Es nesesario Ingresar un paramentro para inicial la busqueda")
+        else:
+            query = "SELECT * FROM INVENTARIOTV WHERE RESOLUCION LIKE %s ORDER BY PRECIO"
+            cursor.execute(query, ('%' + valor_busqueda + '%',))
+            resultados = cursor.fetchall()
+            for i in arbol.get_children():
+                arbol.delete(i)
+            for resultado in resultados:
+                arbol.insert("", END, text=resultado[0], values=(resultado[1], resultado[2], resultado[3], resultado[4], resultado[5], resultado[6], resultado[7], resultado[8], resultado[9], resultado[11]))
+                cursor.close()
+            cnx.close()
     def ventana_de_busqueda():
         menu.Eliminar_botones()
         global arbol
@@ -448,7 +479,7 @@ class venta_de_busqueda_mysql():
         label_busqueda = Label(pnt, text="Buscar Televisiones por ID:")
         label_busqueda.pack()
         entry_busqueda = Entry(pnt)
-        entry_busqueda.place(x=100,y=30)
+        entry_busqueda.pack()
         boton_buscar = Button(pnt, text="Buscar", command=venta_de_busqueda_mysql.buscar_informacion)
         boton_buscar.pack()
         columnas = ("ID_SERIE", "MARCA", "MODELO","TECNOLOGIA","PULGADAS","RESOLUCION","SMART_TV","ROKU","CANTIDAD","PRECIO_DE_VENTA")
@@ -485,6 +516,7 @@ class menu:
         ROKU_C.delete(0,END)
         CANTIDAD_ENTRY.delete(0,END)
         PRECIO_ENTRY.delete(0,END)
+        
         LABEL_ID_SERIE.destroy()
         LABEL_MARCA.destroy()
         LABEL_MODELO.destroy()
@@ -495,6 +527,7 @@ class menu:
         LABEL_ROKU.destroy()
         LABEL_CANTIDAD.destroy()
         LABEL_PRECIO.destroy()
+        LABEL_CATEGORIA.destroy()
         ID_SERIE_ENTRY.destroy()
         MARCA_C.destroy()
         MODELO_ENTRY.destroy()
@@ -505,6 +538,7 @@ class menu:
         ROKU_C.destroy()
         CANTIDAD_ENTRY.destroy()
         PRECIO_ENTRY .destroy()
+        CATEGORIA_C.destroy()
         botonenviar.destroy()
         menu.botones_principlaes(set)
 
@@ -522,6 +556,7 @@ class menu:
         ROKU_C_ven.delete(0,END)
         CANTIDAD_ENTRY_ven.delete(0,END)
         PRECIO_ENTRY_ven.delete(0,END)
+        CATEGORIA_C_ven.delete(0,END)
         ID_LABEL_ENTRY_ven.destroy()
         ID_SERIE_ENTRY_ven.destroy()
         MARCA_C_ven.destroy()
@@ -544,8 +579,11 @@ class menu:
         LABEL_CANTIDAD_ven.destroy()
         LABEL_PRECIO_ven.destroy()
         ID_LABEL_ven.destroy()
+        CATEGORIA_C_ven.destroy()
+        LABEL_CATEGORIA_ven.destroy()
         arbol.destroy()
         botonenviarven.destroy()
+        botoneliminar.destroy()
         menu.botones_principlaes(set)
     def elimina_contenido_de_busqueda():
         label_busqueda.destroy()
@@ -554,30 +592,28 @@ class menu:
         arbol.destroy()
         menu.botones_principlaes(set)
 
-            
     def botones_principlaes(set):
         global Btn_ingreso_de_datos
         global Btn_Busqueda_de_datos
         global Btn_Actualizacion_de_datos
 
-        Btn_ingreso_de_datos = Button(pnt,text="Ingreso de datos",command=Ventana_ingreso_de_datos.ventana_de_ingreso)
-        Btn_ingreso_de_datos.place(x=275,y=200,width=100,height=100)
+        Btn_ingreso_de_datos = Button(pnt,text="Ingreso de TV",command=Ventana_ingreso_de_datos.ventana_de_ingreso)
+        Btn_ingreso_de_datos.place(x=230,y=200,width=130,height=100)
 
-        Btn_Actualizacion_de_datos = Button(pnt,text="Actualizacion de datos",command=ventana_de_actualizacion.ventana_de_tabla)
-        Btn_Actualizacion_de_datos.place(x=400,y=200,width=125,height=100)
+        Btn_Actualizacion_de_datos = Button(pnt,text="Actualizacion de inventario de TV",command=ventana_de_actualizacion.ventana_de_tabla)
+        Btn_Actualizacion_de_datos.place(x=450,y=200,width=200,height=100)
 
-        Btn_Busqueda_de_datos = Button(pnt,text="Busqueda de datos",command=venta_de_busqueda_mysql.ventana_de_busqueda)
-        Btn_Busqueda_de_datos.place(x=550,y=200,width=125,height=100)
+        Btn_Busqueda_de_datos = Button(pnt,text="Busqueda de TV",command=venta_de_busqueda_mysql.ventana_de_busqueda)
+        Btn_Busqueda_de_datos.place(x=700,y=200,width=125,height=100)
 
     def Eliminar_botones():
         Btn_ingreso_de_datos.destroy()
         Btn_Actualizacion_de_datos.destroy()
         Btn_Busqueda_de_datos.destroy()
 
-
+    
 pwidth = round(wtotal/2-wventana/2)
 pheight = round(htotal/2-hventana/2)
-
 
 ventana_princiapl = menu()
 ventana_princiapl.botones_principlaes()
